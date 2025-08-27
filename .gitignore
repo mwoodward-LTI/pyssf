@@ -1,0 +1,12 @@
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Python bytecode and Caches
+__pycache__/
+*.py[cod]
+*.ruff_cache
+
+# Environment
+.venv/
+.env
