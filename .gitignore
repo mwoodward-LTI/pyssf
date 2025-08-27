@@ -10,3 +10,7 @@ __pycache__/
 # Environment
 .venv/
 .env
+
+# Setup Information
+*.egg
+*.egg-info
