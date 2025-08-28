@@ -11,6 +11,8 @@ __pycache__/
 .venv/
 .env
 
+reference_docs/
+
 # Setup Information
 *.egg
 *.egg-info

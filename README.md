@@ -24,6 +24,13 @@ deno compile --unstable-detect-cjs --target aarch64-apple-darwin --output vendor
 
 This tool does not require deno to be installed by utilizing the pre-compiled modules. If you want to run ssf.js via deno, pass `deno_script_path=vendor/main.ts` when initializing an SSFFormatter instance.
 
+### Validate bin Hash:
+**ssf_aarm** `shasum -a 256 ssf_aarm` =
+`49a61674c179ee6a9edf343eb07ae8a8f3d2c66c3de47a1acedaddc1838c390c`
+
+**ssf_win** `certutil -hashfile -SHA256 ssf_win` =
+`bf90aaf4fb4b71af8d8b8dbeceb37f5692c9ad4c61f7f978a719701c11942eac`
+
 ## Usage
 
 ```python
