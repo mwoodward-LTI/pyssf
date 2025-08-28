@@ -27,17 +27,42 @@ function make_ssf(SSF) {
         return t.length >= d ? t : t + fill(" ", d - t.length);
     }
     function pad0r1(v, d) {
-        var t = "" + Math.round(v);
+        var t = "" + roundHalfUp(v);
         return t.length >= d ? t : fill("0", d - t.length) + t;
     }
     function pad0r2(v, d) {
         var t = "" + v;
         return t.length >= d ? t : fill("0", d - t.length) + t;
     }
+    function roundHalfUp(num) {
+        const sign = Math.sign(num);
+        const absNum = Math.abs(num);
+        const floorAbsNum = Math.floor(absNum);
+        const fractionalPart = absNum - floorAbsNum;
+
+        // Check if the fractional part is very close to 0.5
+        // Use a small epsilon for comparison to account for floating point inaccuracies
+        const epsilon = 1e-9; // A small value, adjust if needed
+        const isHalf = Math.abs(fractionalPart - 0.5) < epsilon;
+
+        if (num >= 0) {
+            if (isHalf) {
+                return Math.ceil(num); // Round up for positive .5
+            } else {
+                return Math.floor(num + 0.5); // Original logic for others
+            }
+        } else {
+            if (isHalf) {
+                return Math.floor(num); // Round down (away from zero) for negative .5
+            } else {
+                return Math.ceil(num - 0.5); // Original logic for others
+            }
+        }
+    }
     var p2_32 = Math.pow(2, 32);
     function pad0r(v, d) {
         if (v > p2_32 || v < -p2_32) return pad0r1(v, d);
-        var i = Math.round(v);
+        var i = roundHalfUp(v);
         return pad0r2(i, d);
     }
     function isgeneral(s, i) {
@@ -475,7 +500,7 @@ function make_ssf(SSF) {
                 }
                 if (ss0 >= 2) tt = ss0 === 3 ? 1000 : 100;
                 else tt = ss0 === 1 ? 10 : 1;
-                ss = Math.round(tt * (val.S + val.u));
+                ss = roundHalfUp(tt * (val.S + val.u));
                 if (ss >= 60 * tt) ss = 0;
                 if (fmt === "s") return ss === 0 ? "0" : "" + ss / tt;
                 o = pad0(ss, 2 + ss0);
@@ -582,7 +607,7 @@ function make_ssf(SSF) {
         var frac1 = /# (\?+)( ?)\/( ?)(\d+)/;
         function write_num_f1(r, aval, sign) {
             var den = parseInt(r[4], 10),
-                rr = Math.round(aval * den),
+                rr = roundHalfUp(aval * den),
                 base = Math.floor(rr / den);
             var myn = rr - base * den, myd = den;
             return sign + (base === 0 ? "" : "" + base) + " " +
@@ -618,17 +643,17 @@ function make_ssf(SSF) {
         }
         function rnd(val, d) {
             var dd = Math.pow(10, d);
-            return "" + (Math.round(val * dd) / dd);
+            return "" + (roundHalfUp(val * dd) / dd);
         }
         function dec(val, d) {
             var _frac = val - Math.floor(val), dd = Math.pow(10, d);
-            if (d < ("" + Math.round(_frac * dd)).length) return 0;
-            return Math.round(_frac * dd);
+            if (d < ("" + roundHalfUp(_frac * dd)).length) return 0;
+            return roundHalfUp(_frac * dd);
         }
         function carry(val, d) {
             if (
                 d <
-                    ("" + Math.round((val - Math.floor(val)) * Math.pow(10, d)))
+                    ("" + roundHalfUp((val - Math.floor(val)) * Math.pow(10, d)))
                         .length
             ) {
                 return 1;
@@ -1459,13 +1484,13 @@ function make_ssf(SSF) {
             case 4:
                 switch (ss0) {
                     case 1:
-                        dt.u = Math.round(dt.u * 10) / 10;
+                        dt.u = roundHalfUp(dt.u * 10) / 10;
                         break;
                     case 2:
-                        dt.u = Math.round(dt.u * 100) / 100;
+                        dt.u = roundHalfUp(dt.u * 100) / 100;
                         break;
                     case 3:
-                        dt.u = Math.round(dt.u * 1000) / 1000;
+                        dt.u = roundHalfUp(dt.u * 1000) / 1000;
                         break;
                 }
                 if (dt.u >= 1) {

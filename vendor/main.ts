@@ -1,4 +1,4 @@
-import { SSF } from "ssf";
+import { SSF } from "my_ssf";
 
 function convertStringToType(
     value: string | null,

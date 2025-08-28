@@ -1,5 +1,5 @@
 {
     "imports": {
-        "ssf": "./vendor_modules/ssf/package/ssf.js"
+        "my_ssf": "./vendor_modules/ssf/package/ssf.js"
     }
 }
