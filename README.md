@@ -16,10 +16,13 @@ clone the repo, then run `uv sync`
 ## Precompiled Deno Module
 
 The deno interface for calling ssf.js has been pre-compiled via:
-`deno compile --unstable-detect-cjs --target x86_64-pc-windows-msvc --output vendor/ssf_win vendor/main.ts`
-`deno compile --unstable-detect-cjs --target aarch64-apple-darwin --output vendor/ssf_aarm vendor/main.ts`
+```
+deno compile --unstable-detect-cjs --target x86_64-pc-windows-msvc --output vendor/ssf_win vendor/main.ts
 
-    This tool does not require deno to be installed by utilizing the pre-compiled modules. If you want to run ssf.js via deno, pass `deno_script_path=vendor/main.ts` when initializing an SSFFormatter instance.
+deno compile --unstable-detect-cjs --target aarch64-apple-darwin --output vendor/ssf_aarm vendor/main.ts
+```
+
+This tool does not require deno to be installed by utilizing the pre-compiled modules. If you want to run ssf.js via deno, pass `deno_script_path=vendor/main.ts` when initializing an SSFFormatter instance.
 
 ## Usage
 
