@@ -653,7 +653,8 @@ function make_ssf(SSF) {
         function carry(val, d) {
             if (
                 d <
-                    ("" + roundHalfUp((val - Math.floor(val)) * Math.pow(10, d)))
+                    ("" +
+                        roundHalfUp((val - Math.floor(val)) * Math.pow(10, d)))
                         .length
             ) {
                 return 1;
@@ -1820,7 +1821,6 @@ function make_ssf(SSF) {
 }
 make_ssf(SSF);
 /*global module */
-// if(typeof module !== 'undefined' && typeof DO_NOT_EXPORT_SSF === 'undefined') module.exports = SSF;
-
-// altered to support ES module exports
-export { SSF };
+if (typeof module !== "undefined" && typeof DO_NOT_EXPORT_SSF === "undefined") {
+    module.exports = SSF;
+}

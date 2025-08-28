@@ -1,4 +1,4 @@
-import { SSF } from "my_ssf";
+import SSF from "my_ssf";
 
 function convertStringToType(
     value: string | null,
@@ -34,7 +34,7 @@ const options: object = Deno.args[2] ? JSON.parse(Deno.args[2]) : {};
 const convertedValue = convertStringToType(value);
 
 try {
-    console.log(SSF.format(format, convertedValue, options));
+    console.log((SSF as any).format(format, convertedValue, options)); // any to supress type check error
 } catch (e) {
     if (e instanceof Error) {
         Deno.stderr.write(

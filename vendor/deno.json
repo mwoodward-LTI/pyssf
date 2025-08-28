@@ -1,4 +1,8 @@
 {
+    "tasks": {
+        "start": "deno run --unstable-detect-cjs main.ts",
+        "test": "deno run --unstable-detect-cjs main.ts \"0.00\" 1.556"
+    },
     "imports": {
         "my_ssf": "./vendor_modules/ssf/package/ssf.js"
     }
