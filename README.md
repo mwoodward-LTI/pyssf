@@ -27,11 +27,11 @@ This tool does not require deno to be installed by utilizing the pre-compiled mo
 ## Usage
 
 ```python
-from pyssf import format_number
+from pyssf import SSFFormatter
 
-# Example: Formatting a number
-formatted_value = format_number(1234.56, '#,##0.00')
-print(f"Formatted: {formatted_value}") # Output: Formatted: 1,234.56
+formatter = SSFFormatter()
+formatted_value = formatter.format("0#.0", 1.556)
+print(f"{formatted_value=}") # >>> formatted_value='01.6'
 ```
 
 ## License
