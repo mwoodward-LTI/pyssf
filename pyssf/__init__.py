@@ -2,12 +2,18 @@ import json
 import platform
 import subprocess
 from datetime import datetime
+from pathlib import PurePath
 
 SYSTEM = platform.system()
 
 
 class SSFFormatter:
     def __init__(self, deno_script_path: str | None = None):
+        """
+        Initialize the SSFFormatter with an optional Deno script path.
+
+        :param deno_script_path: Relative Path to the Deno script for formatting (default None)
+        """
         self.deno_script_path = deno_script_path
 
     def format(
@@ -48,15 +54,17 @@ class SSFFormatter:
                 "deno",
                 "run",
                 "--unstable-detect-cjs",
-                self.deno_script_path,
-            ]
-        elif SYSTEM == "Windows":
-            exe_call = [
-                "vendor/ssf_win.exe"  # Windows executable
+                PurePath(__file__).parent.parent / self.deno_script_path,
             ]
         elif SYSTEM == "Darwin":
             exe_call = [
-                "vendor/ssf_aarm"  # macOS ARM executable
+                PurePath(__file__).parent.parent
+                / "vendor/ssf_aarm"  # macOS ARM executable
+            ]
+        elif SYSTEM == "Windows":
+            exe_call = [
+                PurePath(__file__).parent.parent
+                / "vendor/ssf_win.exe"  # Windows executabl
             ]
         else:
             raise ValueError("Unsupported platform")
