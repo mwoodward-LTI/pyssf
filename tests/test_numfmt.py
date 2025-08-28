@@ -5,7 +5,8 @@ import pytest
 
 from pyssf import SSFFormatter
 
-formatter = SSFFormatter(r"vendor/main.ts")
+formatter = SSFFormatter()
+
 
 def read_test_cases():
     test_cases = []

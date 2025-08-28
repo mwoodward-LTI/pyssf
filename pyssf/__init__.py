@@ -1,10 +1,13 @@
 import json
+import platform
 import subprocess
 from datetime import datetime
 
+SYSTEM = platform.system()
+
 
 class SSFFormatter:
-    def __init__(self, deno_script_path: str):
+    def __init__(self, deno_script_path: str | None = None):
         self.deno_script_path = deno_script_path
 
     def format(
@@ -25,6 +28,7 @@ class SSFFormatter:
         :param table: Custom format table as dict (default None)
         :return: Formatted string or None if error
         """
+        # Initialize options dictionary for SSF formatting
         options = {
             "date1904": date1904,
         }
@@ -33,24 +37,42 @@ class SSFFormatter:
         if table is not None:
             options["table"] = table
 
+        # Serialize options to JSON if they exist
         options_json = json.dumps(options) if options else ""
+        # Convert value to string for subprocess call
         value_str = "" if value is None else str(value)
 
-        cmd = [
-            "deno", "run",
-            self.deno_script_path,
-            fmt,
-            value_str,
-        ]
+        # Determine the executable call based on the platform or provided Deno script
+        if self.deno_script_path:
+            exe_call = [
+                "deno",
+                "run",
+                "--unstable-detect-cjs",
+                self.deno_script_path,
+            ]
+        elif SYSTEM == "Windows":
+            exe_call = [
+                "vendor/ssf_win.exe"  # Windows executable
+            ]
+        elif SYSTEM == "Darwin":
+            exe_call = [
+                "vendor/ssf_aarm"  # macOS ARM executable
+            ]
+        else:
+            raise ValueError("Unsupported platform")
+
+        # Construct the full command to be executed
+        cmd = [*exe_call, fmt, value_str]
+
         if options_json:
             cmd.append(options_json)
-
         try:
+            # Run the external command
             result = subprocess.run(
                 cmd,
-                check=True,
-                capture_output=True,
-                text=True,
+                check=True,  # Raise an exception for non-zero exit codes
+                capture_output=True,  # Capture stdout and stderr
+                text=True,  # Decode stdout/stderr as text
             )
             return result.stdout.rstrip("\n")
         except subprocess.CalledProcessError as e:
