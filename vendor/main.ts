@@ -33,4 +33,21 @@ const options: object = Deno.args[2] ? JSON.parse(Deno.args[2]) : {};
 
 const convertedValue = convertStringToType(value);
 
-console.log(SSF.format(format, convertedValue, options));
+try {
+    console.log(SSF.format(format, convertedValue, options));
+} catch (e) {
+    if (e instanceof Error) {
+        Deno.stderr.write(
+            new TextEncoder().encode(
+                `Error calling SSF.format: ${e.message}\n`,
+            ),
+        );
+    } else {
+        Deno.stderr.write(
+            new TextEncoder().encode(
+                `An unknown error occurred during formatting.\n`,
+            ),
+        );
+    }
+    Deno.exit(1);
+}
